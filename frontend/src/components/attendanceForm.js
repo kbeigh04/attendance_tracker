@@ -73,7 +73,7 @@ function AttendanceTable() {
  return (
     <div>
       <h2>Attendance Table</h2>
-      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <table style={{ borderCollapse: 'collapse', width: '90%', margin: '15px'}}>
         <thead>
           <tr>
             <th style={{ border: '1px solid gray', padding: '5px' }}>Name</th>

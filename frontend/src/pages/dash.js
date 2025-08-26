@@ -22,7 +22,7 @@ function Dashboard() {
     setToday(new Date().toLocaleDateString(undefined, options));
   }, []);
   return (
-    <div>
+    <div style={{ backgroundColor: 'white'}}>
       <h1 
         style={{
           color: "white", 

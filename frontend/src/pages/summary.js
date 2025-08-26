@@ -27,6 +27,7 @@ function Summary() {
 
   return (
     <div>
+
       <h1>Attendance Summary</h1>
       <Link to="/dash" style={{
           color: 'white',           
@@ -36,7 +37,8 @@ function Summary() {
           textDecoration: 'none',   
           fontWeight: 'bold',      
           display: 'inline-block', 
-          marginBottom: '20px',   
+          marginBottom: '20px', 
+          marginRight: '5px'  
         }}>Go to Dashboard</Link>
       <input
         type="text"
