@@ -1,17 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/login';
 import Dashboard from './pages/dash';
-import Attendance from './pages/attendance';
 import Report from './pages/summary';
+import Edit from './pages/edit-db';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/dash" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/attendance" element={<Attendance />} />
         <Route path="/summary" element={<Report />} />
+         <Route path="/edit-db" element={<Edit />} />
       </Routes>
     </Router>
   );
