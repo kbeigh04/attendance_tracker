@@ -4,96 +4,157 @@ import { Link } from 'react-router-dom';
 
 function Edit() {
 
-const [users, setUsers] = useState([]);
-const [newUser, setNewUser] = useState("");
+    const [users, setUsers] = useState([]);
+    const [newUser, setNewUser] = useState("");
+    const [today, setToday] = useState("");
 
-useEffect(() => {
-    fetchUsers();
-  }, []);
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
-const fetchUsers = async () => {
-    try {
-      const res = await axios.get("http://localhost:5001/users");
-      setUsers(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-const handleAdd = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:5001/users", { name: newUser });
-      setNewUser("");
-      fetchUsers();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // Delete user
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5001/users/${id}`);
-      fetchUsers();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+    //getting user from database
+    const fetchUsers = async () => {
+        try {
+        const res = await axios.get("http://localhost:5001/users");
+        setUsers(res.data);
+        } catch (err) {
+        console.error(err);
+        }
+    };
+    //adding user
+    const handleAdd = async (e) => {
+        e.preventDefault();
+        try {
+        await axios.post("http://localhost:5001/users", { name: newUser });
+        setNewUser("");
+        fetchUsers();
+        } catch (err) {
+        console.error(err);
+        }
+    };
+    // deleting user
+    const handleDelete = async (id) => {
+        try {
+        await axios.delete(`http://localhost:5001/users/${id}`);
+        fetchUsers();
+        } catch (err) {
+        console.error(err);
+        }
+    };
+    useEffect(() => {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        setToday(new Date().toLocaleDateString(undefined, options));
+    }, []);
   return (
-    <div style={{ padding: "20px" }}>
-    
-      <h1>Attendance Roster</h1>
+    <div style={{ backgroundColor: '#FCF7F8'}}>
+    <center><h1 
+        style={{
+          color: "#FCF7F8", 
+          backgroundColor: '#A31621', 
+          padding: '20px',
+          margin: '0%',
+      }}
+      >CMU Women's Volleyball Club Attendance</h1></center>
+      <h1 style={{ marginLeft: '40px' }} >Attendance Roster</h1>
+      <h2 style ={{
+        color: '#4E8098',
+        display: 'inline-block',
+        paddingRight: '8px',
+        marginLeft: '40px' }}
+        >{today}</h2>
      <Link to="/dash"
      style={{
           color: 'white',           
-          backgroundColor: 'blue',
+          backgroundColor: '#90C2E7',
           padding: '8px 20px',    
           borderRadius: '8px',      
           textDecoration: 'none',   
           fontWeight: 'bold',      
           display: 'inline-block', 
-          marginBottom: '20px',   
-        }}>Go to Dashboard</Link>
+          marginBottom: '20px' 
+        }}>Home</Link>
       {/* Add user form */}
       <form onSubmit={handleAdd} style={{ marginBottom: "20px" }}>
-        <input
+        <center><input
           type="text"
-          placeholder="Enter new user name"
+          placeholder="Enter name"
           value={newUser}
           onChange={(e) => setNewUser(e.target.value)}
           required
+          style={{borderRadius:'8px'}}
         />
-        <button type="submit" style={{ marginLeft: "10px" }}>
-          Add User
-        </button>
+        <button type="submit" style={{ marginLeft: "10px", borderRadius:'8px', color: '#4E8098' }}>
+          Add
+        </button></center>
       </form>
-
-      {/* List of users */}
-      <table border="1" cellPadding="10">
+        <table style={{
+            width: '60%',
+            margin: '15px auto',
+            border: '2px solid #4E8098',   
+            borderRadius: '12px',       
+            overflow: 'hidden' 
+            }}>
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Remove</th>
-          </tr>
+            <tr>
+            <th
+                style={{
+                padding: '8px',
+                borderBottom: '1px solid #90C2E7',
+                borderRight: '1px solid #90C2E7'
+                }}
+            >
+                Name
+            </th>
+            <th
+                style={{
+                padding: '8px',
+                borderBottom: '1px solid #90C2E7'
+                }}
+            >
+                Remove
+            </th>
+            </tr>
         </thead>
         <tbody>
-          {users.map((u) => (
-            <tr key={u.id}>
-              <td>{u.name}</td>
-              <td>
-                <button
-                  onClick={() => handleDelete(u.id)}
-                  style={{ color: "white", background: "red", borderRadius: "6px" }}
+            {users.map((u, rowIndex) => {
+            const isLastRow = rowIndex === users.length - 1;
+            return (
+                <tr key={u.id}>
+                <td
+                    style={{
+                    padding: '8px',
+                    borderRight: '1px solid #90C2E7',
+                    borderBottom: isLastRow ? 'none' : '1px solid #90C2E7'
+                    }}
                 >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
+                    {u.name}
+                </td>
+                <td
+                    style={{
+                    padding: '8px',
+                    borderBottom: isLastRow ? 'none' : '1px solid #90C2E7'
+                    }}
+                >
+                    <center><button
+                    onClick={() => handleDelete(u.id)}
+                    style={{
+                        color: '#FCF7F8',
+                        background: '#A31621',
+                        borderRadius: '12px',
+                        padding: '5px 10px',
+                        border: 'none',
+                        cursor: 'pointer'
+                    }}
+                    >
+                    Remove
+                    </button></center>
+                </td>
+                </tr>
+            );
+            })}
         </tbody>
-      </table>
+        </table>
+
     </div>
   );
 }

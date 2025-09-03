@@ -36,7 +36,6 @@ function AttendanceTable() {
     }));
   };
 
-  // ✅ New: submit all users at once
   const handleSubmitAll = async () => {
     const entries = Object.entries(attendanceData);
     for (const [userName, entry] of entries) {
@@ -58,7 +57,6 @@ function AttendanceTable() {
         )
       );
       alert('All attendance submitted!');
-      // reset form
       const resetData = {};
       users.forEach(u => {
         resetData[u.name] = { status: '', notes: '' };
@@ -70,26 +68,49 @@ function AttendanceTable() {
     }
   };
 
- return (
+  return (
     <div>
-      <h2>Attendance Table</h2>
-      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <table
+        style={{
+          width: '90%',
+          margin: '15px auto',
+          border: '2px solid #4E8098',   
+          borderRadius: '12px',       
+          overflow: 'hidden'
+        }}
+      >
         <thead>
           <tr>
-            <th style={{ border: '1px solid gray', padding: '5px' }}>Name</th>
-            <th style={{ border: '1px solid gray', padding: '5px' }}>Status</th>
-            <th style={{ border: '1px solid gray', padding: '5px' }}>Notes</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #90C2E7', borderRight: '1px solid #90C2E7' }}>Name</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #90C2E7', borderRight: '1px solid #90C2E7' }}>Status</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #90C2E7' }}>Notes</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(u => {
+          {users.map((u, rowIndex) => {
             const currentStatus = attendanceData[u.name]?.status || '';
+            const isLastRow = rowIndex === users.length - 1;
+
             return (
               <tr key={u.name}>
-                <td style={{ border: '1px solid gray', padding: '5px' }}>{u.name}</td>
-                <td style={{ border: '1px solid gray', padding: '5px' }}>
+                <td
+                  style={{
+                    padding: '8px',
+                    borderRight: '1px solid #90C2E7',
+                    borderBottom: isLastRow ? 'none' : '1px solid #90C2E7'
+                  }}
+                >
+                  {u.name}
+                </td>
+                <td
+                  style={{
+                    padding: '8px',
+                    borderRight: '1px solid #90C2E7',
+                    borderBottom: isLastRow ? 'none' : '1px solid #90C2E7'
+                  }}
+                >
                   {['present', 'late', 'absent', 'excused'].map(status => (
-                    <button
+                   <button
                       key={status}
                       onClick={() => handleStatusChange(u.name, status)}
                       style={{
@@ -114,13 +135,18 @@ function AttendanceTable() {
                     </button>
                   ))}
                 </td>
-                <td style={{ border: '1px solid gray', padding: '5px' }}>
+                <td
+                  style={{
+                    padding: '8px',
+                    borderBottom: isLastRow ? 'none' : '1px solid #90C2E7'
+                  }}
+                >
                   <input
                     type="text"
                     value={attendanceData[u.name]?.notes || ''}
                     onChange={e => handleNotesChange(u.name, e.target.value)}
                     placeholder="Add notes"
-                    style={{ width: '90%', padding: '5px' }}
+                    style={{ width: '90%', padding: '5px', borderRadius: '8px' }}
                   />
                 </td>
               </tr>
@@ -128,24 +154,28 @@ function AttendanceTable() {
           })}
         </tbody>
       </table>
-      <button
-        onClick={handleSubmitAll}
-        style={{
-          marginTop: '15px',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          backgroundColor: 'blue',
-          color: 'white',
-          fontWeight: 'bold',
-          cursor: 'pointer'
-        }}
-      >
-        Submit All
-      </button>
+
+      <center>
+        <button
+          onClick={handleSubmitAll}
+          style={{
+            color: 'white',
+            backgroundColor: '#4E8098',
+            padding: '8px 20px',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            display: 'inline-block',
+            marginBottom: '20px',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          Submit All
+        </button>
+      </center>
     </div>
   );
 }
 
-  
-
 export default AttendanceTable;
+
